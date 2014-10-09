@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Primi esempi con Prolog"
+title:  "Prolog Lez 30/09"
 date:   2014-09-30 15:25:15
 categories: Prolog
 ---
