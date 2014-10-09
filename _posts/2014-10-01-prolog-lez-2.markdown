@@ -1,0 +1,141 @@
+---
+layout: post
+title:  "Prolog Lez 01/10"
+date:   2014-10-1 18:00:00
+categories: Prolog
+---
+
+Allsame:
+
+{% highlight prolog %}
+allsame([]).
+allsame([_]).
+allsame([X,X|Xs]):-
+	allsame([X|Xs]).
+{% endhighlight %}
+
+Reverse:
+
+{% highlight prolog %}
+/* Reverse di una lista (Usa append) */
+
+reverse_app([],[]).
+reverse_app([X|Xs],Zs):-
+	reverse_app(Xs,Ys),
+	app(Ys,[X],Zs).
+
+palindrome_app(Xs):-
+	reverse_app(Xs,Xs).
+
+/* Reverse con accumulatore */
+
+reverse_aux(Xs,Ys):-
+	revaux(Xs,[],Ys).
+
+revaux([X|Xs],Ys,Zs):-
+	revaux(Xs,[X|Ys],Zs).
+
+palindrome(Xs):-
+	reverse_aux(Xs,Xs).
+
+/* Append */
+
+app([],Xs,Xs).
+app([X|Xs],Ys,[X|Zs]):-
+	app(Xs,Ys,Zs).
+{% endhighlight %}
+
+Esempi su struttura dati BST:
+
+{% highlight prolog %}
+
+bst(node(15,
+	node(10,
+		node(5,
+			node(2,void,void),
+			node(7,void,void)),
+		node(12,
+			node(11,void,void),
+			node(14,void,void))
+		),
+	node(20,
+		node(18,
+			node(16,void,void),
+			node(19,void,void)),
+		node(21,
+			void,
+			node(25,void,void))
+		))
+).
+
+/* Verifica di appartenenza di un nodo a un BST */
+
+bstmember(X,node(X,_,_)).
+
+bstmember(X,node(Y,L,_)):-
+	X<Y,
+	bstmember(X,L).
+
+bstmember(X,node(Y,_,R)):-
+	X>Y,
+	bstmember(X,R).
+
+run_bstmember(X):-
+	bst(Y),
+	bstmember(X,Y).
+
+/* Inserimento nodo in BST */
+
+bstinsert(X,void,node(X,void,void)).
+bstinsert(X,node(X,L,R),node(X,L,R)).
+
+bstinsert(X,node(Y,L,R),node(Y,NL,R)):-
+	X<Y,
+	bstinsert(X,L,NL).
+
+bstinsert(X,node(X,L,R),node(Y,L,NR)):-
+	X>Y,
+	bstinsert(X,R,NR).
+
+run_bstinsert(X,T):-
+	bst(Y),
+	bstinsert(X,Y,T).
+
+/* Lista elemnti di un BST */
+
+bst2list(T,Xs):-
+	bst2l(T,[],Xs).
+
+bst2l(void,Xs,Xs).
+bst2l(node(X,L,R),Xs,Zs):-
+	bst2l(R,Xs,Ys),
+	bst2l(L,[X|Ys],Zs).
+
+run_bst2list(Xs):-
+	bst(X),
+	bst2list(X,Xs).
+
+/* Ordinamento lista mediante albero BST (2 versioni) */
+
+bstsort([],[]).
+bstsort(Xs,Ys):-
+	list2bst_v1(Xs,T),
+	bst2list(T,Ys).
+
+/* V1 */
+
+list2bst_v1([],void).
+list2bst_v1([X|Xs],NT):-
+	list2bst_v1(Xs,T),
+	bstinsert(X,T,NT).
+
+/* V2 */
+
+list2bst_v2(Xs,T):-
+	l2b(Xs,void,T).
+
+l2b([],T,T).
+l2b([X|Xs],T,NNT):-
+	bstinsert(X,T,NT),
+	l2b(Xs,NT,NNT).
+{% endhighlight %}
