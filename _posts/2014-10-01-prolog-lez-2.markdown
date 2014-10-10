@@ -5,19 +5,17 @@ date:   2014-10-1 18:00:00
 categories: Prolog
 ---
 
-Allsame:
+Esercizi lezione 2 Prolog
 
 {% highlight prolog %}
+/* Allsame */
+
 allsame([]).
 allsame([_]).
 allsame([X,X|Xs]):-
 	allsame([X|Xs]).
-{% endhighlight %}
 
-Reverse:
-
-{% highlight prolog %}
-/* Reverse di una lista (Usa append) */
+/* Reverse (append) */
 
 reverse_app([],[]).
 reverse_app([X|Xs],Zs):-
@@ -27,7 +25,11 @@ reverse_app([X|Xs],Zs):-
 palindrome_app(Xs):-
 	reverse_app(Xs,Xs).
 
-/* Reverse con accumulatore */
+app([],Xs,Xs).
+app([X|Xs],Ys,[X|Zs]):-
+	app(Xs,Ys,Zs).
+
+/* Reverse (accumulatore) */
 
 reverse_aux(Xs,Ys):-
 	revaux(Xs,[],Ys).
@@ -38,16 +40,7 @@ revaux([X|Xs],Ys,Zs):-
 palindrome(Xs):-
 	reverse_aux(Xs,Xs).
 
-/* Append */
-
-app([],Xs,Xs).
-app([X|Xs],Ys,[X|Zs]):-
-	app(Xs,Ys,Zs).
-{% endhighlight %}
-
-Esempi su struttura dati BST:
-
-{% highlight prolog %}
+/* Struttura dati per esercizi BST */
 
 bst(node(15,
 	node(10,
