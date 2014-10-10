@@ -79,4 +79,57 @@ run_samesums(X,Y):-
 	same_bst1(X),
 	same_bst2(Y),
 	samesums([X,Y]).
+
+
+/* Factorial */
+
+fact(0,1).
+fact(N,Z):-
+	N > 0,
+	X is N - 1,
+	fact(X,Y),
+	Z is N * Y.
+
+/* Reverse Length */
+
+rev_len([],0).
+rev_len([_|Xs],N):-
+	N > 0,
+	M is N - 1,
+	rev_len(Xs,M).
+
+/* Partition (Quicksort) */
+
+partition(_,[],[],[]).
+partition(N,[X|Xs],[X|Ls],Bs):-
+	X =< N,
+	partition(N,Xs,Ls,Bs).
+
+partition(N,[X|Xs],Ls,[X|Bs]):-
+	X > N,
+	partition(N,Xs,Ls,Bs).
+
+/* Quicksort (append) */
+
+quicksort1([],[]).
+quicksort1([X|Xs],Ws):-
+	partition(X,Xs,Ls,Bs),
+	quicksort1(Ls,Ys),
+	quicksort1(Bs,Zs),
+	app(Ys,[X|Zs],Ws).
+
+app([],Xs,Xs).
+app([X|Xs],Ys,[X|Zs]):-
+	app(Xs,Ys,Zs).
+
+/* Quicksort (accumulatore) */
+
+quicksort2(Xs,Ys):-
+	quick_aux(Xs,[],Ys).
+
+quick_aux([],Xs,Xs).
+quick_aux([X|Xs],Ys,Rs):-
+	partition(X,Xs,Ls,Bs),
+	quick_aux(Bs,Ys,Zs),
+	quick_aux(Ls,[X|Zs],Rs).
 {% endhighlight %}
