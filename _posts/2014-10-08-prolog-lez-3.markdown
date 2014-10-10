@@ -1,0 +1,82 @@
+---
+layout: post
+title:  "Prolog Lez 08/10"
+date:   2014-10-8 18:00:00
+categories: Prolog
+---
+
+Esercizi lezione 3 Prolog
+
+{% highlight prolog %}
+bst(node(15,
+	node(10,
+		node(5,
+			node(2,void,void),
+			node(7,void,void)),
+		node(12,
+			node(11,void,void),
+			node(14,void,void))
+		),
+	node(20,
+		node(18,
+			node(16,void,void),
+			node(19,void,void)),
+		node(21,
+			void,
+			node(25,void,void))
+		))
+).
+
+same_bst1(node(5,node(4,void,void),node(6,void,void))).
+
+same_bst2(node(10,node(5,void,void),void)).
+
+/* Length */
+
+len([],0).
+len([_|Xs],M):-
+	len(Xs,N),
+	M is N + 1.
+
+/* Treesum */
+
+treesum(void,0).
+treesum(node(X,L,R),S):-
+	treesum(L,Y),
+	treesum(R,Z),
+	S is X + Y + Z.
+
+run_treesum(S):-
+	bst(X),
+	treesum(X,S).
+
+/* Samesum */
+
+samesum([]).
+samesum([_]).
+samesum([X,Y|Xs]):-
+	treesum(X,Z),
+	treesum(Y,Z),
+	samesum([Y|Xs]).
+
+run_samesum(X,Y):-
+	same_bst1(X),
+	same_bst2(Y),
+	samesum([X,Y]).
+
+samesums([]).
+samesums([_]).
+samesums([T1,T2|Ts]):-
+	treesum(T1,X),
+	samesumsaux(X,[T2|Ts]).
+
+samesumsaux(_,[]).
+samesumsaux(X,[T|Ts]):-
+	treesum(T,X),
+	samesumsaux(X,Ts).
+
+run_samesums(X,Y):-
+	same_bst1(X),
+	same_bst2(Y),
+	samesums([X,Y]).
+{% endhighlight %}
